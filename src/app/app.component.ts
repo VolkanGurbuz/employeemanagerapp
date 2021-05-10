@@ -9,19 +9,20 @@ import {error} from '@angular/compiler/src/util';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   // @ts-ignore
   public employees: Employee[];
 
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private employeeService: EmployeeService) {
+  }
 
   // tslint:disable-next-line:typedef
   ngOnInit() {
     this.getEmployees();
   }
 
-  public getEmployees(): void{
+  public getEmployees(): void {
     this.employeeService.getEmployees().subscribe(
       (response: Employee[]) => {
         this.employees = response;
@@ -29,8 +30,33 @@ export class AppComponent implements OnInit{
       // tslint:disable-next-line:no-shadowed-variable
       (error: HttpErrorResponse) => {
         alert(error.message);
-    }
+      }
     );
+  }
+
+
+  public onOpenModel(employee: Employee, mode: string): void {
+    const container = document.getElementById('main-container');
+
+    const button = document.createElement('button');
+
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+
+    if (mode === 'add') {
+      button.setAttribute('data-target', '#addEmployeeModal');
+    }
+    if (mode === 'edit') {
+      button.setAttribute('data-target', '#updateEmployeeModal');
+    }
+    if (mode === 'delete') {
+      button.setAttribute('data-target', '#deletemployeeModal');
+    }
+    // @ts-ignore
+    container.appendChild(button);
+    button.click();
+
   }
 
 
